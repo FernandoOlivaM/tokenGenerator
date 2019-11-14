@@ -1,0 +1,8 @@
+{
+  "runtimeOptions": {
+    "additionalProbingPaths": [
+      "C:\\Users\\ferol\\.dotnet\\store\\|arch|\\|tfm|",
+      "C:\\Users\\ferol\\.nuget\\packages"
+    ]
+  }
+}
