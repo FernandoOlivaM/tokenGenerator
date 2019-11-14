@@ -5873,11 +5873,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\ferol\\source\\repos\\protoken\\protoken\\protoken.csproj",
+      "projectUniqueName": "C:\\Users\\ferol\\source\\repos\\tokenGenerator\\protoken\\protoken.csproj",
       "projectName": "protoken",
-      "projectPath": "C:\\Users\\ferol\\source\\repos\\protoken\\protoken\\protoken.csproj",
+      "projectPath": "C:\\Users\\ferol\\source\\repos\\tokenGenerator\\protoken\\protoken.csproj",
       "packagesPath": "C:\\Users\\ferol\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\ferol\\source\\repos\\protoken\\protoken\\obj\\",
+      "outputPath": "C:\\Users\\ferol\\source\\repos\\tokenGenerator\\protoken\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\ferol\\AppData\\Roaming\\NuGet\\NuGet.Config",

@@ -1,9 +1,7 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using Nancy.Json;
-using Newtonsoft.Json;
 using System;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,18 +17,20 @@ namespace protoken
             var issuer = "Machete.com/remitente";
             var authority = "MacheteMontenegro";
             //la llave privada debe contener 256 caracteres
-            var privateKey = "J6k2eVCTXDp5b97u6gNH5GaaqHDxCmzz2wv3PRPFRsuW2UavK8LGPRauC4VSeaetKTMtVmVzAC8fh8Psvp8PFybEvpYnULHfRpM8TA2an7GFehrLLvawVJdSRqh2unCnWehhh2SJMMg5bktRRapA8EGSgQUV8TCafqdSEHNWnGXTjjsMEjUpaxcADDNZLSYPMyPSfp6qe5LMcd5S9bXH97KeeMGyZTS2U8gp3LGk2kH4J4F3fsytfpe9H9qKwgjb"; var createJwt = await CreateJWTAsync(user, issuer, authority, privateKey);
-
+            var privateKey = "J6k2eVCTXDp5b97u6gNH5GaaqHDxCmzz2wv3PRPFRsuW2UavK8LGPRauC4VSeaetKTMtVmVzAC8fh8Psvp8PFybEvpYnULHfRpM8TA2an7GFehrLLvawVJdSRqh2unCnWehhh2SJMMg5bktRRapA8EGSgQUV8TCafqdSEHNWnGXTjjsMEjUpaxcADDNZLSYPMyPSfp6qe5LMcd5S9bXH97KeeMGyZTS2U8gp3LGk2kH4J4F3fsytfpe9H9qKwgjb";
+            var userJson = new JavaScriptSerializer().Serialize(user);
+            var createJwt = await CreateJWTAsync(user, issuer, authority, privateKey, userJson);
             await Console.Out.WriteLineAsync(createJwt);
             await Console.In.ReadLineAsync();
         }
 
-        public static async Task<string> CreateJWTAsync(User user, string issuer, string authority, string symSec)       
+        public static async Task<string> CreateJWTAsync(User user, string issuer, string authority, string symSec, string userJson)       
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var claims = await CreateClaimsIdentities(user);
+            var claims = await CreateClaimsIdentities("Datos Usuario en Json "+userJson);
 
-            var token = tokenHandler.CreateJwtSecurityToken(issuer: issuer,
+            var token = tokenHandler.CreateJwtSecurityToken(
+                issuer: issuer,
                 audience: authority,
                 subject: claims,
                 notBefore: DateTime.UtcNow,
@@ -44,12 +44,10 @@ namespace protoken
             return tokenHandler.WriteToken(token);
         }
 
-        public static Task<ClaimsIdentity> CreateClaimsIdentities(User user)
+        public static Task<ClaimsIdentity> CreateClaimsIdentities(string userJson)
         {
             ClaimsIdentity claimsIdentity = new ClaimsIdentity();
-            claimsIdentity.AddClaim(new Claim(ClaimTypes.Email, user.EmailAddress));
-            claimsIdentity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()));
-            claimsIdentity.AddClaim(new Claim(ClaimTypes.Name, user.FullName ?? $"{user.FirstName} {user.LastName}"));
+            claimsIdentity.AddClaim(new Claim(ClaimTypes.UserData, userJson));
             return Task.FromResult(claimsIdentity);
         }
         public class User
